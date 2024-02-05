@@ -9,6 +9,7 @@
             font-family: 'Arial', sans-serif;
             text-align: center;
             margin: 80px;
+            background-color: #e7e7e7;
     
             transition: background-color 0.5s;
         }
@@ -32,6 +33,7 @@
     <img src="image\Diagram_of_I_Ching_hexagrams_owned_by_Gottfried_Wilhelm_Leibniz,_1701.jpg" alt="Hexagram" width="300px">
     <p id="hexagram-name"></p>
     <p id="hexagram-description"></p>
+    <p id="ai-liuyao-reading"></p>
 </div>
 
 <button onclick="generateHexagram()">Generate New Hexagram</button>
@@ -85,7 +87,7 @@
         { name: "䷪ 夬 (guài)", description: "Breakthrough (Resoluteness):Encourages resolute action and taking apart." },
         { name: "䷫ 姤 (gòu)", description: "Coming to Meet:Suggests openness and receptivity, emphasizing positive encounters and collaborations." },
         { name: "䷬ 萃 (cuì)", description: "Gathering Together (Massing):Encourages collective efforts, gatherings, and collaboration for a common purpose." },
-        { name: "䷭ 升 (shēng),", description: "Pushing Upward:Advises a gradual and persistent approach to progress, symbolizing steady ascent." },
+        { name: "䷭ 升 (shēng)", description: "Pushing Upward:Advises a gradual and persistent approach to progress, symbolizing steady ascent." },
         { name: "䷮ 困 (kùn)", description: "Oppression (Exhaustion):Represents a state of oppression or exhaustion, emphasizing the need for resilience." },
         { name: "䷯ 井 (jǐng)", description: "The Well:Signifies a source of nourishment and stability, suggesting a time of abundance." },
         { name: "䷰ 革 (gé)", description: "Revolution (Molting):Encourages transformative change, shedding old patterns for renewal and growth." },
@@ -131,9 +133,15 @@
             color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
+        
     }
 </script>
 <div class="citation">
+    <p>
+        Aknowledgement: This is not serious fortune telling. </p>
+        <p>The hexagrams are generated randomly. The descriptions are from Wikipedia. </p>
+        <p>here are crucial differences between the original I Ching and this web page. The PaiPan and HePan process is missing in this website(because I don't really understand that part neither lol). </p>
+        <p>he original I Ching is a serious and complex system. This website is just for fun. </p>
     <p>Citation: Wikipedia. 2023. "六十四卦." Wikimedia Foundation. Last modified July 22, 2023. https://zh.wikipedia.org/wiki/%E5%85%AD%E5%8D%81%E5%9B%9B%E5%8D%A6.</p>
 </body>
 </html>
