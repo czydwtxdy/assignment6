@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiuYao</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 80px;
+    
+            transition: background-color 0.5s;
+        }
+        name {
+            font-size: 60px;
+            transition: color 0.8s; 
+        }
+        .citation {
+            font-size: 12px;
+            color: #666;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Let's Fortune Telling</h1>
+
+<div id="result-container">
+    <h2>Generated Hexagram:</h2>
+    <img src="image\Diagram_of_I_Ching_hexagrams_owned_by_Gottfried_Wilhelm_Leibniz,_1701.jpg" alt="Hexagram" width="300px">
+    <p id="hexagram-name"></p>
+    <p id="hexagram-description"></p>
+</div>
+
+<button onclick="generateHexagram()">Generate New Hexagram</button>
+
+
+<script>
+    // Hexagram data
+    const hexagrams = [
+        { name: "䷀ 乾 (qián)", description: "The Creative: A strong, creative force that encourages you to be ambitious and to take initiative in your endeavors." },
+        { name: "䷁ 坤 (kūn)", description: "The Receptive: A yielding, nurturing force that suggests a time for patience, receptivity, and stability." },
+        { name: "䷂ 屯 (zhūn)", description: "Difficulty at the Beginning:Indicates challenges and obstacles at the outset. Recommends patience, perseverance, and a cautious approach to overcome difficulties." },
+        { name: "䷃ 蒙 (méng)", description: "Youthful Folly:Reflects a period of inexperience and immaturity. Advises learning from mistakes, seeking guidance, and gaining wisdom through experience." },
+        { name: "䷄ 需 (xū)", description: "Waiting (Nourishment):Suggests a time of patience and waiting for the right conditions before taking action. Emphasizes nourishing oneself in preparation." },
+        { name: "䷅ 訟 (sòng)", description: "Conflict:Indicates conflict and disputes. Advises addressing issues through open communication, diplomacy, and finding common ground." },
+        { name: "䷆ 師 (shī)", description: "The Army:Symbolizes an organized and disciplined effort. Encourages cooperation, leadership, and strategic planning for success." },
+        { name: "䷇ 比 (bǐ)", description: "Holding Together (Union):epresents unity and cooperation, emphasizing strength in teamwork." },
+        { name: "䷄ 需 (xū)", description: "Waiting (Nourishment):Suggests a time of patience and waiting for the right conditions before taking action. Emphasizes nourishing oneself in preparation." },
+        { name: "䷈ 小畜 (xiǎo xù)", description: " Small Accumulating:Suggests gradual accumulation and growth, encouraging patience." },
+        { name: "䷉ 履 (lǚ)", description: " Treading (Conduct):Advises cautious and mindful steps in one's conduct." },
+        { name: "䷊ 泰 (tài)", description: "Peace:Symbolizes a state of peace and harmony, encouraging balance." },
+        { name: "䷋ 否 (pǐ)", description: "Standstill (Stagnation):Represents a time of standstill, suggesting reflection and patience." },
+        { name: "䷌ 同人 (tóng rén)", description: "Fellowship:Encourages fellowship and cooperation for mutual benefit." },
+        { name: "䷍ 大有 (dà yǒu)", description: "Possession in Great Measure:Indicates abundance and success, encouraging gratitude." },
+        { name: "䷎ 謙 (qiān)", description: "Modesty:Advises humility and modesty in interactions and endeavors." },
+        { name: "䷏ 豫 (yù)", description: "Enthusiasm:Encourages enthusiasm and a positive outlook." },
+        { name: "䷑ 蠱 (gǔ)", description: "Work on What Has Been Spoiled (Decay):Represents a need for transformation and addressing decay." },
+        { name: "䷒ 臨 (lín)", description: "Approach:Suggests a thoughtful and strategic approach to challenges." },
+        { name: "䷓ 觀 (guān)", description: "Contemplation (View):Encourages contemplation and gaining insights from observation." },
+        { name: "䷔ 噬嗑 (shì kè)", description: "Biting Through:Signifies overcoming obstacles with determination and force." },
+        { name: "䷖ 賁 (bì)", description: "Grace:Symbolizes grace and elegance in one's actions." },
+        { name: "䷄ 剝 (bō)", description: "Splitting Apart:Represents the need to address separation and division." },
+        { name: "䷗ 復 (fù)", description: "Return (The Turning Point):Suggests a time of return and renewal, marking a turning point." },
+        { name: "䷘ 無妄 (wú wàng)", description: "Innocence (The Unexpected):Encourages embracing innocence and spontaneity." },
+        { name: "䷙ 大畜 (dà xù)", description: "Great Accumulating:Represents the accumulation of resources and wisdom." },
+        { name: "䷚ 頤 (yí)", description: "Nourishment (Providing):Encourages nourishment and support for oneself and others." },
+        { name: "䷛ 大過 (dà guò)", description: "Preponderance of the Great:Indicates excess and suggests moderation." },
+        { name: "䷜ 坎 (kǎn)", description: "The Abysmal (Water):Symbolizes the flow of water, emphasizing adaptability." },
+        { name: "䷝ 離 (lí)", description: "The Clinging (Fire):Represents the transformative nature of fire, suggesting change." },
+        { name: "䷞ 咸 (xián)", description: "Conjoining:Advises diplomacy and influence in relationships." },
+        { name: "䷟ 恆 (héng)", description: "Duration:Represents stability and enduring qualities." },
+        { name: "䷠ 遯 (dùn)", description: "Retreat:Suggests strategic withdrawal for introspection." },
+        { name: "䷡ 大壯 (dà zhuàng)", description: "Great Power:Encourages the responsible use of power and strength." },
+        { name: "䷢ 晉 (jìn)", description: "Progress:Indicates progress and forward movement." },
+        { name: "䷣ 明夷 (míng yí)", description: "Darkening of the Light:Advises caution and careful navigation in challenging times." },
+        { name: "䷤ 家人 (jiā rén)", description: "Retreat:Suggests strategic withdrawal for introspection." },
+        { name: "䷥ 睽 (kuí)", description: "Opposition:Represents opposition and suggests finding common ground." },
+        { name: "䷦ 蹇 (jiǎn)", description: "Obstruction:Indicates obstacles and advises patience and perseverance." },
+        { name: "䷧ 解 (xiè)", description: "Deliverance: Signifies the resolution of obstacles and freedom." },
+        { name: "䷨ 損 (sǔn)", description: "Decrease:Advises careful management during times of decrease." },
+        { name: "䷩ 益 (yì)", description: "Increase:Suggests growth and expansion." },
+        { name: "䷪ 夬 (guài)", description: "Breakthrough (Resoluteness):Encourages resolute action and taking apart." },
+        { name: "䷫ 姤 (gòu)", description: "Coming to Meet:Suggests openness and receptivity, emphasizing positive encounters and collaborations." },
+        { name: "䷬ 萃 (cuì)", description: "Gathering Together (Massing):Encourages collective efforts, gatherings, and collaboration for a common purpose." },
+        { name: "䷭ 升 (shēng),", description: "Pushing Upward:Advises a gradual and persistent approach to progress, symbolizing steady ascent." },
+        { name: "䷮ 困 (kùn)", description: "Oppression (Exhaustion):Represents a state of oppression or exhaustion, emphasizing the need for resilience." },
+        { name: "䷯ 井 (jǐng)", description: "The Well:Signifies a source of nourishment and stability, suggesting a time of abundance." },
+        { name: "䷰ 革 (gé)", description: "Revolution (Molting):Encourages transformative change, shedding old patterns for renewal and growth." },
+        { name: "䷱ 鼎 (dǐng)", description: "The Cauldron:Symbolizes a stable and balanced situation, emphasizing the importance of community." },
+        { name: "䷲ 震 (zhèn)", description: " The Arousing (Shock, Thunder):Represents a time of awakening and sudden change, advising adaptability." },
+        { name: "䷳ 艮 (gèn)", description: "Keeping Still, Mountain:Encourages stability and contemplation, emphasizing the strength of stillness." },
+        { name: "䷴ 漸 (jiàn)", description: "Development (Gradual Progress):Suggests gradual and steady progress, emphasizing patience in achieving goals." },
+        { name: "䷵ 歸妹 (guī mèi)", description: "The Marrying Maiden:Symbolizes a union or partnership, advising receptivity and adaptability." },
+        { name: "䷷ 旅 (lǚ)", description: "The Wanderer:Advises adaptability and openness to new experiences, emphasizing the journey." },
+        { name: "䷸ 巽 (xùn)", description: "The Gentle (Wind):Represents the gentle force of wind, advising flexibility and adaptability." },
+        { name: "䷹ 兌 (duì)", description: "The Open, exchange, the joyous, lake:Signifies joy and satisfaction, emphasizing the importance of positive energy." },
+        { name: "䷻ 節 (jié)", description: "Limitation:Advises moderation and setting boundaries, emphasizing the importance of balance." },
+        { name: "䷼ 中孚 (zhōng fú)", description: "Inner Truth:Encourages sincerity and honesty, emphasizing inner integrity in communication." },
+        { name: "䷽ 小過 (xiǎo guò)", description: "Small Preponderance:Suggests minor excess or imbalances, advising moderation and correction." },
+        { name: "䷾ 既濟 (Jì Jì)", description: "After Completion: A time of fulfillment and completion. It indicates a successful conclusion to your efforts." },
+        { name: "䷿未濟 (Wèi Jì)", description: "Before Completion: A situation that is in the process of coming to fruition but has not yet reached its full potential. Patience is advised." }
+    ];
+
+    function generateHexagram() {
+       
+        const randomIndex = Math.floor(Math.random() * hexagrams.length);
+
+        const randomHexagram = hexagrams[randomIndex];
+
+        document.getElementById('hexagram-name').innerText = randomHexagram.name;
+        document.getElementById('hexagram-description').innerText = randomHexagram.description;
+
+
+        const randomColor = getRandomColor();
+        document.body.style.backgroundColor = randomColor;
+
+
+        const nameElement = document.querySelector('name');
+        const nameColor = getRandomColor();
+        nameElement.style.color = nameColor;
+    }
+
+  
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script>
+<div class="citation">
+    <p>Citation: Wikipedia. 2023. "六十四卦." Wikimedia Foundation. Last modified July 22, 2023. https://zh.wikipedia.org/wiki/%E5%85%AD%E5%8D%81%E5%9B%9B%E5%8D%A6.</p>
+</body>
+</html>
